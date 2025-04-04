@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://cyia50dj8q08y"]
+
+[ext_resource type="Texture2D" uid="uid://ds5cv8euwb5je" path="res://assets/sprites/world_tileset.png" id="1_2ykwk"]
+
+[node name="Riser" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.177443, 0.177443)
+texture = ExtResource("1_2ykwk")
+offset = Vector2(0, -115.36)
+region_enabled = true
+region_rect = Rect2(270, 142, 131, 211)

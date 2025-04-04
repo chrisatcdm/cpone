@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://2wfhpfrrjpha"]
+
+[node name="anode" type="Node"]
+metadata/type = ""
+metadata/potential_mv = 0

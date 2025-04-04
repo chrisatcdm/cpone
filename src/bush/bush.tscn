@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://c7ym6g7mr7ocu"]
+
+[ext_resource type="Texture2D" uid="uid://kg33url4jcbe" path="res://assets/sprites/old/world_tileset.png" id="1_lad4k"]
+
+[node name="Node2D" type="Node2D"]
+y_sort_enabled = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+y_sort_enabled = true
+texture = ExtResource("1_lad4k")
+offset = Vector2(0, -5)
+region_enabled = true
+region_rect = Rect2(16, 48, 16, 16)
