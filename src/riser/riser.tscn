@@ -1,12 +1,20 @@
-[gd_scene load_steps=2 format=3 uid="uid://cyia50dj8q08y"]
+[gd_scene load_steps=3 format=3 uid="uid://cyia50dj8q08y"]
 
 [ext_resource type="Texture2D" uid="uid://ds5cv8euwb5je" path="res://assets/sprites/world_tileset.png" id="1_2ykwk"]
 
-[node name="Riser" type="Node2D"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_61sw8"]
+radius = 7.0
+
+[node name="Riser" type="StaticBody2D"]
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, 8)
 scale = Vector2(0.177443, 0.177443)
 texture = ExtResource("1_2ykwk")
 offset = Vector2(0, -115.36)
 region_enabled = true
 region_rect = Rect2(270, 142, 131, 211)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -1)
+shape = SubResource("CircleShape2D_61sw8")

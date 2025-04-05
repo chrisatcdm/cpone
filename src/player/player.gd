@@ -1,34 +1,34 @@
 extends CharacterBody2D
 
+@export var speed = 100
+@export var friction = 0.5
+@export var acceleration = 0.1
 
-@export var speed = 130 # How fast the player will move (pixels/sec).
-var screen_size # Size of the game window.
+@onready var animated_sprite = $AnimatedSprite2D
 
-@onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
-
-#func _ready():
-	#screen_size = get_viewport_rect().size
-	#hide()
-
-func _process(delta):
-	var velocity = Vector2.ZERO # The player's movement vector.
-	if Input.is_action_pressed(&"move_right"):
-		velocity.x += 1
+func get_input():
+	var input = Vector2()
+	if Input.is_action_pressed('move_right'):
+		input.x += 1
 		animated_sprite.flip_h = false
-	if Input.is_action_pressed(&"move_left"):
-		velocity.x -= 1
+	if Input.is_action_pressed('move_left'):
+		input.x -= 1
 		animated_sprite.flip_h = true
-	if Input.is_action_pressed(&"move_down"):
-		velocity.y += 1
-	if Input.is_action_pressed(&"move_up"):
-		velocity.y -= 1
-
-	if velocity.length() > 0:
-		velocity = velocity.normalized() * speed
-		$AnimatedSprite2D.play()
+	if Input.is_action_pressed('move_down'):
+		input.y += 1
+	if Input.is_action_pressed('move_up'):
+		input.y -= 1
+	if input == Vector2.ZERO:
+		animated_sprite.play('idle')
 	else:
-		$AnimatedSprite2D.stop()
+		animated_sprite.play('run')
 
-	position += velocity * delta
-	#position = position.clamp(Vector2.ZERO, screen_size)
-	
+	return input
+
+func _physics_process(delta):
+	var direction = get_input()
+	if direction.length() > 0:
+		velocity = velocity.lerp(direction.normalized() * speed, acceleration)
+	else:
+		velocity = velocity.lerp(Vector2.ZERO, friction)
+	move_and_slide()
