@@ -120,7 +120,7 @@ y_sort_enabled = true
 position = Vector2(-96, -27)
 
 [node name="Player" parent="World Features" instance=ExtResource("6_a20vb")]
-position = Vector2(-97, -85)
+position = Vector2(-173, -68)
 
 [node name="Camera2D" type="Camera2D" parent="World Features/Player"]
 y_sort_enabled = true
