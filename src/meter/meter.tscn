@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://by0t13war4c54"]
+
+[ext_resource type="Texture2D" uid="uid://dywbkc8rom2km" path="res://assets/sprites/meter.png" id="1_8a3ga"]
+
+[node name="Meter" type="Node2D"]
+
+[node name="Meter" type="Sprite2D" parent="."]
+position = Vector2(331, 160)
+texture = ExtResource("1_8a3ga")
+
+[node name="ColorRect" type="ColorRect" parent="Meter"]
+offset_left = -419.0
+offset_top = -691.0
+offset_right = 417.0
+offset_bottom = -428.0
+color = Color(0.238283, 0.574575, 0.633266, 1)
