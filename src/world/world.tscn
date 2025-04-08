@@ -4,8 +4,8 @@
 [ext_resource type="Texture2D" uid="uid://mdycgsypd1k3" path="res://assets/Mini RPG Asset Pack/Objects/Tilemap.png" id="2_ocs7n"]
 [ext_resource type="Texture2D" uid="uid://dxnsyry7ilemk" path="res://assets/sprites/old/platforms.png" id="3_jsigt"]
 [ext_resource type="Texture2D" uid="uid://bg1r8epwnbgcf" path="res://assets/sprites/old/Tufts and Lumps.png" id="4_lid7q"]
-[ext_resource type="PackedScene" uid="uid://cyia50dj8q08y" path="res://src/riser/riser.tscn" id="5_hg6dy"]
-[ext_resource type="PackedScene" uid="uid://m73o5ssmaiup" path="res://src/player/player.tscn" id="6_a20vb"]
+[ext_resource type="PackedScene" uid="uid://cyia50dj8q08y" path="res://src/riser/Riser.tscn" id="5_hg6dy"]
+[ext_resource type="PackedScene" uid="uid://m73o5ssmaiup" path="res://src/player/Player.tscn" id="6_a20vb"]
 [ext_resource type="FontFile" uid="uid://c5hn0btmhr122" path="res://assets/fonts/PixelOperator8.ttf" id="9_4dyjh"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lnu2h"]
@@ -116,7 +116,7 @@ tile_set = SubResource("TileSet_lbhrr")
 [node name="Entities" type="Node2D" parent="."]
 y_sort_enabled = true
 
-[node name="Player" parent="Entities" instance=ExtResource("6_a20vb")]
+[node name="Player" parent="Entities" groups=["player"] instance=ExtResource("6_a20vb")]
 position = Vector2(-173, -68)
 
 [node name="Camera2D" type="Camera2D" parent="Entities/Player"]
@@ -125,22 +125,11 @@ zoom = Vector2(4, 4)
 position_smoothing_enabled = true
 position_smoothing_speed = 20.0
 
-[node name="DVM" type="Label" parent="Entities/Player"]
-offset_left = 13.0
-offset_top = -26.0
-offset_right = 72.0
-offset_bottom = -4.0
-theme_override_fonts/font = ExtResource("9_4dyjh")
-theme_override_font_sizes/font_size = 8
-text = "test"
-
 [node name="Riser00" parent="Entities" instance=ExtResource("5_hg6dy")]
 position = Vector2(-96, -27)
-riser_native_potential = -540
 
 [node name="Riser01" parent="Entities" instance=ExtResource("5_hg6dy")]
 position = Vector2(46, -67)
-riser_native_potential = -550
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3

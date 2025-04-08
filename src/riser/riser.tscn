@@ -1,7 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://cyia50dj8q08y"]
+[gd_scene load_steps=7 format=3 uid="uid://cyia50dj8q08y"]
 
 [ext_resource type="Texture2D" uid="uid://ds5cv8euwb5je" path="res://assets/sprites/world_tileset.png" id="1_2ykwk"]
-[ext_resource type="Script" uid="uid://b4gkonx7wd1qa" path="res://src/riser/riser.gd" id="1_bv6vf"]
+[ext_resource type="Script" uid="uid://b4gkonx7wd1qa" path="res://src/riser/Riser.gd" id="1_bv6vf"]
+[ext_resource type="Script" uid="uid://kmxv2nx4gr65" path="res://src/riser/InteractionArea.gd" id="3_nw2ft"]
+[ext_resource type="FontFile" uid="uid://c5hn0btmhr122" path="res://assets/fonts/PixelOperator8.ttf" id="4_mt06p"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_61sw8"]
 radius = 7.0
@@ -24,10 +26,26 @@ region_rect = Rect2(270, 142, 131, 211)
 position = Vector2(0, -1)
 shape = SubResource("CircleShape2D_61sw8")
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="InteractionArea" type="Area2D" parent="."]
+script = ExtResource("3_nw2ft")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
 shape = SubResource("CircleShape2D_bv6vf")
 
-[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
-[connection signal="area_shape_entered" from="Area2D" to="." method="_on_area_2d_area_shape_entered"]
+[node name="PotentialLabel" type="Label" parent="."]
+visible = false
+offset_left = -41.0
+offset_top = -44.0
+offset_right = 40.0
+offset_bottom = -34.0
+theme_override_fonts/font = ExtResource("4_mt06p")
+theme_override_font_sizes/font_size = 8
+text = "touch me"
+horizontal_alignment = 1
+
+[node name="LabelDisplayTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[connection signal="area_entered" from="InteractionArea" to="." method="_on_area_2d_area_entered"]
+[connection signal="area_shape_entered" from="InteractionArea" to="." method="_on_area_2d_area_shape_entered"]
