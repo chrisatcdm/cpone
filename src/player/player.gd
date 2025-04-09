@@ -38,21 +38,27 @@ func _physics_process(delta):
 		velocity = velocity.lerp(Vector2.ZERO, friction)
 	move_and_slide()
 
-	# --- Handle Interaction Input ---
-	# Check if the interact action (e.g., "interact" mapped to E key) was just pressed.
-	if Input.is_action_just_pressed("interact"): # Use your action name here!
-		if current_interactable != null:
-			# Check if the object we think is interactable actually has the function we need.
-			if current_interactable.has_method("read_potential"):
-				# Call the function on the specific Riser instance we have stored.
-				current_interactable.read_potential()
-				# The Riser's function will print the value for now.
-				# Later, you might store the returned value or update UI here.
-			else:
-				printerr("Player: Tried to interact with '%s', but it lacks a 'read_potential' method." % current_interactable.name)
+	# In Player.gd (inside _physics_process or _process)
 
-		# else:
-			# print("Player: Interact pressed, but nothing in range.") # Optional debug
+	# --- Handle Interaction Input ---
+	if Input.is_action_just_pressed("interact"): # Use your main interact action name
+		if current_interactable != null:
+			# --- UPDATED LOGIC ---
+			# Priority 1: Check if it has the 'interact()' method (used by Anode)
+			if current_interactable.has_method("interact"):
+				current_interactable.interact() # Call the Anode's connect/disconnect toggle
+
+			# Priority 2: If not interact(), check if it has 'read_potential()' (used by Riser)
+			elif current_interactable.has_method("read_potential"):
+				current_interactable.read_potential() # Call the Riser's read function
+
+			# Fallback: If neither known method is found
+			else:
+				printerr("Player: Target '%s' has no known interaction method ('interact' or 'read_potential')." % current_interactable.name)
+		# --- END UPDATED LOGIC ---
+
+	# else:
+		# Optional: print("Player: Interact pressed, but nothing in range.")
 
 # --- Methods Called by Risers via call_group ---
 

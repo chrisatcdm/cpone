@@ -1,0 +1,30 @@
+[gd_scene load_steps=6 format=3 uid="uid://chc3aoh67li7k"]
+
+[ext_resource type="Texture2D" uid="uid://ds5cv8euwb5je" path="res://assets/sprites/world_tileset.png" id="1_eypj7"]
+[ext_resource type="Script" uid="uid://cp3cdvqctujwt" path="res://src/Test Post/TestPost.gd" id="1_tq1d6"]
+[ext_resource type="Script" uid="uid://drwp45iw1i5ot" path="res://src/Anode/Interaction_area.gd" id="2_5gs3s"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_b1vcd"]
+radius = 6.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5gs3s"]
+radius = 18.4391
+
+[node name="StaticBody2D" type="StaticBody2D"]
+script = ExtResource("1_tq1d6")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+y_sort_enabled = true
+texture = ExtResource("1_eypj7")
+offset = Vector2(0, -12)
+region_enabled = true
+region_rect = Rect2(48.901, 7.87811, 15.2732, 24.2289)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_b1vcd")
+
+[node name="InteractionArea" type="Area2D" parent="."]
+script = ExtResource("2_5gs3s")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
+shape = SubResource("CircleShape2D_5gs3s")

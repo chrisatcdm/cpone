@@ -2,36 +2,34 @@
 extends StaticBody2D
 
 # --- Riser Properties ---
-var pipe_to_soil_potential: int
+var native_potential: float # Initial random value
+var current_potential: float # Changes based on CP system state
+var total_anode_influence: float = 0.0 # Keep track of summed influence from anodes
 
 # --- Node References ---
 @onready var interaction_area: Area2D = $InteractionArea
-@onready var potential_label: Label = $PotentialLabel # Reference to the Label node
-@onready var label_display_timer: Timer = $LabelDisplayTimer # Reference to the Timer node
+@onready var potential_label: Label = $PotentialLabel
+@onready var label_display_timer: Timer = $LabelDisplayTimer
 
 # --- Interaction State ---
 var player_is_in_range: bool = false
 
 # --- Initialization ---
 func _ready():
-	# Randomize potential
-	pipe_to_soil_potential = randf_range(-500, -520)
-	# Debug print using % formatting
-	print("Riser '%s' initialized with potential: %s mV" % [self.name, pipe_to_soil_potential])
+	native_potential = randf_range(-600.0, -500.0)
+	current_potential = native_potential # Start with native potential
+	print("Riser '%s' initialized with potential: %.1f mV" % [self.name, native_potential]) # Print native at start
 
-	# Connect signals from child nodes
+	# Connect signals... (rest of _ready as before)
 	if interaction_area:
 		interaction_area.player_entered_range.connect(_on_player_entered_interaction_range)
 		interaction_area.player_exited_range.connect(_on_player_exited_interaction_range)
 	else:
-		# Using % formatting for printerr
 		printerr("Riser (%s): InteractionArea node not found." % self.name)
 
 	if label_display_timer:
-		# Connect the timer's timeout signal to our hiding function
 		label_display_timer.timeout.connect(_on_label_display_timer_timeout)
 	else:
-		# Using % formatting for printerr
 		printerr("Riser (%s): LabelDisplayTimer node not found." % self.name)
 
 # --- Signal Handlers ---
@@ -42,34 +40,57 @@ func _on_player_entered_interaction_range():
 func _on_player_exited_interaction_range():
 	player_is_in_range = false
 	get_tree().call_group("player", "clear_interactable", self)
-	# Option: Hide label immediately when player leaves range, even if timer is running
-	# if potential_label:
-	#    potential_label.visible = false
+	# if potential_label: potential_label.visible = false
+
+# --- NEW: Methods for Anode Interaction ---
+func add_anode_influence(influence: float):
+	total_anode_influence += influence
+	# Recalculate current potential based on native and total influence
+	current_potential = native_potential + total_anode_influence
+	print("Riser '%s' received influence %.1f, new potential: %.1f mV" % [self.name, influence, current_potential])
+
+func remove_anode_influence(influence: float):
+	total_anode_influence -= influence
+	# Prevent influence from going negative if multiple anodes disconnect improperly
+	total_anode_influence = max(0.0, total_anode_influence)
+	# Recalculate current potential
+	current_potential = native_potential + total_anode_influence
+	print("Riser '%s' removed influence %.1f, new potential: %.1f mV" % [self.name, influence, current_potential])
 
 # --- Public Method for Player Interaction ---
 func read_potential() -> float:
 	if player_is_in_range:
-		# Print to console using % formatting
-		print("--- Reading Riser '%s' --- Potential: %s mV ---" % [self.name, pipe_to_soil_potential])
+		var potential_to_display : float
+		var label_text : String
+		var console_text : String
 
-		# Update and Show Label
+		# Check the global interruption state from the Autoload script
+		if CPSystemManager.system_interrupted:
+			# System IS Interrupted - Read "Off" potential (Native)
+			potential_to_display = native_potential
+			label_text = "%.1f mV (Off)" % potential_to_display
+			console_text = "Potential: %s (Instant Off)" % label_text
+		else:
+			# System is NOT Interrupted - Read "On" potential (Current)
+			potential_to_display = current_potential
+			label_text = "%.1f mV (On)" % potential_to_display
+			console_text = "Potential: %s (System On)" % label_text
+
+		# Print to console with state indication
+		print("--- Reading Riser '%s' --- %s ---" % [self.name, console_text])
+
+		# Update and Show Label (common logic for both states)
 		if potential_label and label_display_timer:
-			# Format the text for display using % formatting (single value doesn't need array)
-			potential_label.text = "%s mV" % pipe_to_soil_potential
-			# Make the label visible
+			potential_label.text = label_text # Show "On" or "Off" state on label
 			potential_label.visible = true
-			# Start the timer to hide it after a delay
 			label_display_timer.start()
 
-		return pipe_to_soil_potential
+		return potential_to_display # Return the relevant potential value
 	else:
-		# Using % formatting for printerr
 		printerr("Riser (%s): Attempted to read potential, but player reported as out of range!" % self.name)
-		return NAN # Return Not A Number for error state
+		return NAN
 
 # --- Timer Timeout Handler ---
-# This function is called when the LabelDisplayTimer finishes counting down.
 func _on_label_display_timer_timeout():
-	# Hide the label
 	if potential_label:
 		potential_label.visible = false

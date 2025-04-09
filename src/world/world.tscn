@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=4 uid="uid://4n78r7lf54c8"]
+[gd_scene load_steps=14 format=4 uid="uid://4n78r7lf54c8"]
 
 [ext_resource type="Script" uid="uid://ba4e11f2x64mu" path="res://src/world/world.gd" id="1_hg6dy"]
 [ext_resource type="Texture2D" uid="uid://mdycgsypd1k3" path="res://assets/Mini RPG Asset Pack/Objects/Tilemap.png" id="2_ocs7n"]
@@ -6,7 +6,9 @@
 [ext_resource type="Texture2D" uid="uid://bg1r8epwnbgcf" path="res://assets/sprites/old/Tufts and Lumps.png" id="4_lid7q"]
 [ext_resource type="PackedScene" uid="uid://cyia50dj8q08y" path="res://src/riser/Riser.tscn" id="5_hg6dy"]
 [ext_resource type="PackedScene" uid="uid://m73o5ssmaiup" path="res://src/player/Player.tscn" id="6_a20vb"]
+[ext_resource type="PackedScene" uid="uid://iqkvepeowtu" path="res://src/Anode/Anode.tscn" id="7_wg6dd"]
 [ext_resource type="FontFile" uid="uid://c5hn0btmhr122" path="res://assets/fonts/PixelOperator8.ttf" id="9_4dyjh"]
+[ext_resource type="PackedScene" uid="uid://chc3aoh67li7k" path="res://src/Test Post/TestPost.tscn" id="9_hg6dy"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lnu2h"]
 texture = ExtResource("2_ocs7n")
@@ -125,11 +127,16 @@ zoom = Vector2(4, 4)
 position_smoothing_enabled = true
 position_smoothing_speed = 20.0
 
-[node name="Riser00" parent="Entities" instance=ExtResource("5_hg6dy")]
+[node name="Riser00" parent="Entities" groups=["pipeline_1"] instance=ExtResource("5_hg6dy")]
 position = Vector2(-96, -27)
 
-[node name="Riser01" parent="Entities" instance=ExtResource("5_hg6dy")]
+[node name="Riser01" parent="Entities" groups=["pipeline_1"] instance=ExtResource("5_hg6dy")]
 position = Vector2(46, -67)
+
+[node name="Anode00" parent="Entities" instance=ExtResource("7_wg6dd")]
+position = Vector2(-2, 19)
+scale = Vector2(0.2, 0.2)
+target_pipeline_group = &"pipeline_1"
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
@@ -147,5 +154,30 @@ theme_override_fonts/font = ExtResource("9_4dyjh")
 theme_override_font_sizes/font_size = 8
 text = "Use WASD keys to move.
 Press 'E' to interact."
+
+[node name="Instructions2" type="Label" parent="Control"]
+layout_mode = 0
+offset_left = -28.0
+offset_top = -7.0
+offset_right = 27.0
+offset_bottom = 16.0
+theme_override_fonts/font = ExtResource("9_4dyjh")
+theme_override_font_sizes/font_size = 8
+text = "Enable Anode"
+horizontal_alignment = 1
+
+[node name="Instructions3" type="Label" parent="Control"]
+layout_mode = 0
+offset_left = -117.0
+offset_top = -174.0
+offset_right = -3.0
+offset_bottom = -151.0
+theme_override_fonts/font = ExtResource("9_4dyjh")
+theme_override_font_sizes/font_size = 8
+text = "Open/close circuit"
+horizontal_alignment = 1
+
+[node name="StaticBody2D" parent="." instance=ExtResource("9_hg6dy")]
+position = Vector2(-59, -139)
 
 [connection signal="ready" from="." to="." method="_on_ready"]

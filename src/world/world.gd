@@ -49,7 +49,7 @@ func _on_body_entered(body: PhysicsBody2D, area: Area2D):
 		print("Player's body entered area: ", area.name)
 		# Get the root node of the scene that owns the Area2D
 		var root_of_area_scene = area
-		while root_of_area_scene.get_parent():
+		while root_of_area_scene .get_parent():
 			root_of_area_scene = root_of_area_scene.get_parent()
 
 		print("Root node of the scene containing this area: ", root_of_area_scene.name)
